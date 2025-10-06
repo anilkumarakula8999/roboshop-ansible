@@ -4,9 +4,9 @@
   gather_facts: false               # Optional but good for faster runs
   vars:
     ami_id: ami-09c813fb71547fc4f
-    sg_id: sg-07c8acf3fa6b923fa    # Your security group ID
+    sg_id: sg-0967adedfb4db3092   # Your security group ID
     zone_id: "Z0948150OFPSYTNVYZOY" # Your hosted zone ID
-    domain_name: "daws86s.fun"
+    domain_name: "akulaanil.fun"
     instances: 
       - mongodb
 
