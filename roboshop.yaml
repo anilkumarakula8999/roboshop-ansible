@@ -1,5 +1,5 @@
 - name: create ec2 and route 53
-  local: localhost
+  hosts: localhost
   connection: local
   vars:
     ami_id: ami-09c813fb71547fc4f
