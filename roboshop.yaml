@@ -8,16 +8,18 @@
     domain_name: "akulanil.fun"
     instances:
       - mongodb
-    
+
   tasks:
   - name: create ec2 instance
-    community.aws.ec2: 
+    amazon.aws.ec2:
+      name: "{{ item }}"
+      instance_type: t3.micro
+      image_id: "{{ ami_id }}"
+      security_groups:
+        - "{{ sg_id }}"
+      tags:
         Name: "{{ item }}"
-        instance_type: t3.micro
-        image_id: "{{ ami_id }}"
-        security_group: "{{ sg_id }}"
-        tags:
-          Name: "{{ item }}"
+      wait: yes
     loop: "{{ instances }}"
     register: ec2_output
 
