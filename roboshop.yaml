@@ -3,11 +3,11 @@
   connection: local
   vars:
     ami_id: ami-09c813fb71547fc4f
-    sg_ id:  sg-0967adedfb4db3092
+    sg_id: sg-0967adedfb4db3092
     zone_id: "Z0948150OFPSYTNVYZOY"
     domain_name: "akulanil.fun"
     instances:
-    - mongodb
+      - mongodb
     
   tasks:
   - name: create ec2 instance
