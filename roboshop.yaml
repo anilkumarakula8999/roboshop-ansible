@@ -1,28 +1,29 @@
-- name: create ec2 and route 53
-  hosts: localhost
+- name: create ec2 and r53
+  hosts: localhost                  # Changed from 'local' to 'localhost' (correct host)
   connection: local
+  gather_facts: false               # Optional but good for faster runs
   vars:
     ami_id: ami-09c813fb71547fc4f
-    sg_id: sg-0967adedfb4db3092
-    zone_id: "Z0948150OFPSYTNVYZOY"
-    domain_name: "akulanil.fun"
-    instances:
+    sg_id: sg-07c8acf3fa6b923fa    # Your security group ID
+    zone_id: "Z0948150OFPSYTNVYZOY" # Your hosted zone ID
+    domain_name: "daws86s.fun"
+    instances: 
       - mongodb
 
   tasks:
-  - name: create ec2 instance
-    amazon.aws.ec2:
-      name: "{{ item }}"
-      instance_type: t3.micro
-      image_id: "{{ ami_id }}"
-      security_groups:
-        - "{{ sg_id }}"
-      tags:
-        Name: "{{ item }}"
-      wait: yes
-    loop: "{{ instances }}"
-    register: ec2_output
+    - name: create ec2 instance
+      amazon.aws.ec2_instance:
+        name: "{{ item }}"
+        instance_type: t3.micro
+        security_groups:                 # Note: plural and list format
+          - "{{ sg_id }}"
+        image_id: "{{ ami_id }}"
+        tags:
+          Name: "{{ item }}"
+        wait: yes                      # Wait for instance to be running
+      loop: "{{ instances }}"
+      register: ec2_output
 
-  - name: print the ec2 output
-    ansible.builtin.debug:
-      msg: "{{ ec2_output }}"
+    - name: print ec2 output
+      ansible.builtin.debug:
+        var: ec2_output
