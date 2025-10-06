@@ -11,9 +11,9 @@
       - mongodb
 
   tasks:
-    - name: create ec2 instance
-      state: absent
-      amazon.aws.ec2_instance:
+  - name: create ec2 instance
+    state: absent
+    amazon.aws.ec2_instance:
         name: "{{ item }}"
         instance_type: t3.micro
         security_groups:                 # Note: plural and list format
@@ -22,9 +22,9 @@
         tags:
           Name: "{{ item }}"
         wait: yes                      # Wait for instance to be running
-      loop: "{{ instances }}"
-      register: ec2_output
+    loop: "{{ instances }}"
+    register: ec2_output
 
-    - name: print ec2 output
-      ansible.builtin.debug:
-        var: ec2_output
+  - name: print ec2 output
+    ansible.builtin.debug:
+     var: ec2_output
