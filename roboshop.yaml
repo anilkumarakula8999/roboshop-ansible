@@ -9,7 +9,7 @@
     domain_name: "akulaanil.fun"
     instances: 
       - mongodb
-
+      - redis
   tasks:
   - name: create ec2 instance
     state: absent
@@ -24,7 +24,3 @@
         wait: yes                      # Wait for instance to be running
     loop: "{{ instances }}"
     register: ec2_output
-
-  - name: print ec2 output
-    ansible.builtin.debug:
-     var: ec2_output
