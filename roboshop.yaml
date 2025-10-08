@@ -1,36 +1,42 @@
 - name: create ec2 and r53
-  hosts: localhost                  # Changed from 'local' to 'localhost' (correct host)
+  hosts: localhost
   connection: local
-  gather_facts: false               # Optional but good for faster runs
   vars:
     ami_id: ami-09c813fb71547fc4f
-    sg_id: sg-0967adedfb4db3092   # Your security group ID
-    zone_id: "Z0948150OFPSYTNVYZOY" # Your hosted zone ID
+    sg_id: sg-0967adedfb4db3092 # replace with your SG ID
+    zone_id: "Z0948150OFPSYTNVYZOY" # replace with your ID
     domain_name: "akulaanil.fun"
-    instances: 
-      - mongodb
-      - redis
-      - mysql
-      - rabbitmq
-      - catalogue
-      - user
-      - cart
+    # we can pass instances through command line using -e
+    # instances: 
+    # - mongodb
+    # - redis
+    # - mysql
+    # - rabbitmq
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
-        name: "{{ item }}"
-        instance_type: t3.micro
-        security_groups:                 # Note: plural and list format
-          - "{{ sg_id }}"
-        image_id: "{{ ami_id }}"
-        tags:
-          Name: "{{ item }}"         
+      name: "{{ item }}"
+      instance_type: t3.micro
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id }}"
+      tags:
+        Name: "{{ item }}"
     loop: "{{ instances }}"
     register: ec2_output
 
-  - name: print the ec2_output
-    ansible.builtin.debug:
-     msg: "{{ ec2_output }}"
+  # - name: print the ec2_output
+  #   ansible.builtin.debug:
+  #     msg: "{{ ec2_output }}"
+
+  # - name: print public_ip
+  #   ansible.builtin.debug: 
+  #     msg: "{{ item.instances[0].public_ip_address }}"
+  #   loop: "{{ ec2_output.results }}"
+
+  # - name: print private_ip
+  #   ansible.builtin.debug: 
+  #     msg: "{{ item.instances[0].private_ip_address }}"
+  #   loop: "{{ ec2_output.results }}"
 
   - name: create route53 record
     amazon.aws.route53:
@@ -43,7 +49,15 @@
       overwrite: true
     loop: "{{ ec2_output.results }}"
 
-
-  # - name: print the ec2_output
-  #   ansible.builtin.debug:
-  #     msg: "{{ ec2_output }}"
+  # we are creating one record with public only for frontend
+  - name: create route53 record for frontend
+    amazon.aws.route53:
+      state: present
+      zone: "{{ domain_name }}"
+      record: "{{ domain_name }}" # daws86s.fun
+      type: A
+      ttl: 1
+      value: "{{ item.instances[0].public_ip_address }}"
+      overwrite: true
+    when: item.item == "frontend"
+    loop: "{{ ec2_output.results }}"
