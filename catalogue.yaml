@@ -61,11 +61,11 @@
     ansible.builtin.command: mongosh mongodb.akulaanil.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
     register: catalogue_output
 
-  - name: evaluate cataalogue database
-    community.mongodb.mongodb_shell:
-      login_host: mongodb.daws86s.fun
-      eval: db.getMongo().getDBNames().indexOf('catalogue')
-    register: catalogue_output
+  # - name: evaluate cataalogue database
+  #   community.mongodb.mongodb_shell:
+  #     login_host: mongodb.daws86s.fun
+  #     eval: db.getMongo().getDBNames().indexOf('catalogue')
+  #   register: catalogue_output
 
   - name: print catalogue output
     ansible.builtin.debug:
