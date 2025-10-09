@@ -6,11 +6,11 @@
     sg_id: sg-0334ecc5d4428acd1 # replace with your SG ID
     zone_id: "Z0948150OFPSYTNVYZOY" # replace with your ID
     domain_name: "akulaanil.fun"
-    instances: 
-    - mongodb
-    - redis
-    - mysql
-    - rabbitmq
+    # instances: 
+    # - mongodb
+    # - redis
+    # - mysql
+    # - rabbitmq
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
