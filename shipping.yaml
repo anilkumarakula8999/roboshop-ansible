@@ -11,7 +11,7 @@
     - maven
     - mysql
 
-  - name: install mysql python librabries
+  - name: install mysql python libraries
     ansible.builtin.pip:
       excutable: pip3.9
       name: "{{ item }}"
