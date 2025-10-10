@@ -71,13 +71,13 @@
   #   ansible.builtin.debug:
   #     msg: "{{ catalogue_output }}"
 
-  # - name: load products into mongodb
-  #   ansible.builtin.shell: mongosh --host mongodb.akulaanil.fun </app/db/master-data.js
-  #   when: catalogue_output.stdout | int < 0
+  - name: load products into mongodb
+    ansible.builtin.shell: mongosh --host mongodb.akulaanil.fun </app/db/master-data.js
+    when: catalogue_output.stdout | int < 0
 
-  - name: start and enable cataalogue
-    ansible.builtin.service:
-      name: catalogue
-      enabled: yes
-      state: started
+  # - name: start and enable cataalogue
+  #   ansible.builtin.service:
+  #     name: catalogue
+  #     enabled: yes
+  #     state: started
   
