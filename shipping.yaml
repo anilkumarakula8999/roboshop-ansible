@@ -5,19 +5,11 @@
   tasks:
   - name: install maven
     ansible.builtin.dnf:
-      name: "{{ item }}"
+      name: "{{ item}}"
       state: present
     loop:
     - maven
     - mysql
-
-  - name: install mysql python libraries
-    ansible.builtin.pip:
-      executable: pip3.9
-      name: "{{ item }}"
-    loop:
-    - cryptography
-    - PyMySQL
 
   - name: create roboshop system user
     ansible.builtin.user:
@@ -72,7 +64,7 @@
     community.mysql.mysql_db:
       state: import
       name: all
-      login_host: mysql.daws86s.fun
+      login_host: mysql.akulaanil.fun
       login_user: root
       login_password: RoboShop@1
       target: "{{ item }}"
